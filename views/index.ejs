@@ -6,8 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Story Portal</title>
     <link rel="icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
     <link href="/output.css" rel="stylesheet" type="text/css">
     <style>
         @keyframes gradient {
@@ -70,60 +68,70 @@
             }
         }
     </style>
-    <audio id="bgMusic" style="display: none;">
+    <audio id="bgMusic" style="display: none;" loop>
         <source src="/assets/story_of_my_life.mp3" type="audio/mpeg">
     </audio>
 </head>
 
 <body class="h-screen animated-bg">
-    <main class="grid min-h-full place-items-center px-6 py-24 sm:py-32 lg:px-8">
-        <div class="text-center">
-            <p class="font-black text-indigo-300 text-lg">
+    <main class="w-full min-h-screen flex items-center justify-center px-4 py-8 sm:px-6 lg:px-8">
+        <div class="text-center w-full max-w-5xl mx-auto">
+            <!-- Welcome text -->
+            <p class="font-black text-indigo-300 text-base sm:text-lg">
                 <span class="mr-2">🎵</span>
                 <span class="rainbow-text font-black underline decoration-teal-300 decoration-2">Welcome, my
                     friend!</span>
                 <span class="ml-2">✨</span>
             </p>
-            <br>
-            <div class="mx-auto relative mb-10">
-                <blockquote class="mb-6 text-balance text-3xl font-black tracking-tight drop-shadow-lg sm:text-6xl">
+
+            <!-- Quote section -->
+            <div class="mx-auto relative my-8 sm:my-10">
+                <blockquote class="mb-4 sm:mb-6 text-balance font-black tracking-tight drop-shadow-lg
+                    text-2xl
+                    sm:text-4xl
+                    md:text-5xl
+                    lg:text-6xl">
                     "<span id="quote" class="rainbow-text break-words">loading...</span>"
                 </blockquote>
-                <span class="mt-10 text-teal-200 text-lg font-bold text-teal-300 sm:text-xl/8">~
+                <span class="text-teal-200 text-base sm:text-lg font-bold text-teal-300">~
                     <span id="author">loading...</span>
                 </span>
             </div>
-            <p class="mt-6 text-indigo-200 text-lg max-w-2xl mx-auto">
+
+            <!-- Description text -->
+            <p class="mt-4 sm:mt-6 text-indigo-200 text-base sm:text-lg max-w-2xl mx-auto px-4">
                 Share the soundtrack of your journey — whether it's today's mood
                 <span class="text-teal-300">✨</span>
                 or the song that inspires you the most
             </p>
 
-            <div class="mt-10 flex flex-col items-center justify-center gap-y-4">
-                <!-- Music Controls -->
+            <!-- Controls section -->
+            <div class="mt-8 sm:mt-10 flex flex-col items-center justify-center gap-y-4">
+                <!-- Music Controls - Made more compact on mobile -->
                 <div
-                    class="flex items-center gap-x-3 bg-indigo-950/50 rounded-full px-4 py-2 border border-indigo-400/20">
+                    class="flex items-center gap-x-2 sm:gap-x-3 bg-indigo-950/50 rounded-full px-3 sm:px-4 py-2 border border-indigo-400/20">
                     <button onclick="toggleMusic()"
-                        class="flex items-center gap-x-2 text-indigo-200 hover:text-white transition-colors">
-                        <span id="playIcon" class="text-xl">▶️</span>
-                        <span id="pauseIcon" class="text-xl hidden">⏸️</span>
-                        <span id="musicStatus">Play "Story of My Life"</span>
+                        class="flex items-center gap-x-1 sm:gap-x-2 text-indigo-200 hover:text-white transition-colors">
+                        <span id="playIcon" class="text-lg sm:text-xl">▶️</span>
+                        <span id="pauseIcon" class="text-lg sm:text-xl hidden">⏸️</span>
+                        <span id="musicStatus" class="text-sm sm:text-base">Play "Story of My Life"</span>
                     </button>
-                    <!-- Audio Wave Animation -->
-                    <div id="audioWaves" class="hidden space-x-1">
+                    <!-- Audio waves made slightly smaller on mobile -->
+                    <div id="audioWaves" class="hidden space-x-0.5 sm:space-x-1">
                         <span
-                            class="inline-block w-1 h-3 bg-teal-400 rounded-full animate-[soundwave_0.5s_ease-in-out_infinite]"></span>
+                            class="inline-block w-0.5 sm:w-1 h-2 sm:h-3 bg-teal-400 rounded-full animate-[soundwave_0.5s_ease-in-out_infinite]"></span>
                         <span
-                            class="inline-block w-1 h-4 bg-teal-400 rounded-full animate-[soundwave_0.5s_ease-in-out_infinite_0.1s]"></span>
+                            class="inline-block w-0.5 sm:w-1 h-3 sm:h-4 bg-teal-400 rounded-full animate-[soundwave_0.5s_ease-in-out_infinite_0.1s]"></span>
                         <span
-                            class="inline-block w-1 h-2 bg-teal-400 rounded-full animate-[soundwave_0.5s_ease-in-out_infinite_0.2s]"></span>
+                            class="inline-block w-0.5 sm:w-1 h-1.5 sm:h-2 bg-teal-400 rounded-full animate-[soundwave_0.5s_ease-in-out_infinite_0.2s]"></span>
                         <span
-                            class="inline-block w-1 h-3 bg-teal-400 rounded-full animate-[soundwave_0.5s_ease-in-out_infinite_0.3s]"></span>
+                            class="inline-block w-0.5 sm:w-1 h-2 sm:h-3 bg-teal-400 rounded-full animate-[soundwave_0.5s_ease-in-out_infinite_0.3s]"></span>
                     </div>
                 </div>
 
-                <!-- Your existing Share button -->
-                <a href="/" class="rounded-md bg-gradient-to-r from-indigo-600 to-purple-500 px-5 py-3 text-base font-bold text-white shadow-lg 
+                <!-- Share button - Made more compact on mobile -->
+                <a href="/" class="w-full sm:w-auto rounded-md bg-gradient-to-r from-indigo-600 to-purple-500 
+                    px-4 sm:px-5 py-2.5 sm:py-3 text-sm sm:text-base font-bold text-white shadow-lg 
                     hover:from-indigo-500 hover:to-purple-400 hover:text-white hover:shadow-2xl hover:-translate-y-1 
                     transform transition-all duration-200 ease-in-out
                     focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300
