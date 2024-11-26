@@ -1,9 +1,9 @@
-# my-story-portal
+# My Story Portal
 
-# Introduction
+## Introduction
 - A place for emotional expression through music
 - A platform for sharing both current moods and inspirational songs
-A space where music and personal stories intersect
+- A space where music and personal stories intersect
 
 ## Technology Stack
 - EJS
@@ -12,7 +12,7 @@ A space where music and personal stories intersect
 - Express
 - MySQL
 
-# AI Feedback
+## AI Feedback
 I think this is a genuinely excellent idea for several reasons:
 
 - Emotional Connection   
@@ -31,7 +31,7 @@ I think this is a genuinely excellent idea for several reasons:
     - Creates meaningful connections through shared musical taste and experiences
 
 - Unique Value Proposition
-While there are many music sharing platforms (Spotify, SoundCloud)
+    - While there are many music sharing platforms (Spotify, SoundCloud)
     - And many story-sharing platforms (Medium, Twitter)
     - Few platforms specifically combine music with personal emotional narratives
 
@@ -45,4 +45,4 @@ While there are many music sharing platforms (Spotify, SoundCloud)
     - Possibility for mood tracking through music over time
     - Potential for community features like shared playlists or mood-based recommendations
 
-- The concept fills a unique niche by creating a space where music isn't just about entertainment, but about emotional expression and connection. It's like a musical diary that others can relate to and find inspiration from.
+The concept fills a unique niche by creating a space where music isn't just about entertainment, but about emotional expression and connection. It's like a musical diary that others can relate to and find inspiration from.
