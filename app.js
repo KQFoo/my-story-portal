@@ -12,7 +12,7 @@ app.set("views", "./views");
 
 app.use("/", mainRouter);
 
-const PORT = process.env.PORT || 8080;
+const PORT = process.env.PORT;
 app.listen(PORT, (err) => {
     if (err) {
         console.err("Error in running the server");

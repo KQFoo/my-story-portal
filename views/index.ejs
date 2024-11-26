@@ -5,7 +5,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Story Portal</title>
-    <link href="./output.css" rel="stylesheet" type="text/css">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon.ico">
+    <link href="/output.css" rel="stylesheet" type="text/css">
     <style>
         @keyframes gradient {
             0% {
@@ -22,60 +25,191 @@
         }
 
         .animated-bg {
-            background: linear-gradient(-45deg, #c7d2fe, #e0e7ff, #dbeafe, #bfdbfe, #c7d2fe);
-            background-size: 300% 300%;
-            animation: gradient 20s ease infinite;
+            background: linear-gradient(-45deg,
+                    #1e1b4b,
+                    /* Deep indigo */
+                    #312e81,
+                    /* Rich indigo */
+                    #1e1b4b,
+                    /* Deep indigo */
+                    #4338ca);
+            /* Bright indigo */
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
             transition: all 0.5s ease;
         }
+
+        .rainbow-text {
+            background: linear-gradient(-45deg,
+                    #c084fc,
+                    /* Purple */
+                    #818cf8,
+                    /* Indigo */
+                    #60a5fa,
+                    /* Blue */
+                    #34d399,
+                    /* Emerald */
+                    #818cf8);
+            /* Back to Indigo */
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: textGradient 5s linear infinite;
+        }
+
+        @keyframes soundwave {
+
+            0%,
+            100% {
+                transform: scaleY(1);
+            }
+
+            50% {
+                transform: scaleY(1.5);
+            }
+        }
     </style>
+    <audio id="bgMusic" style="display: none;">
+        <source src="/assets/story_of_my_life.mp3" type="audio/mpeg">
+    </audio>
 </head>
 
 <body class="h-screen animated-bg">
     <main class="grid min-h-full place-items-center px-6 py-24 sm:py-32 lg:px-8">
         <div class="text-center">
-            <p class="font-black text-indigo-900 text-lg">Welcome to <span
-                    class="text-indigo-900 underline decoration-2 decoration-indigo-500 font-black text-lg">My
-                    Story
-                    Portal</span>
+            <p class="font-black text-indigo-300 text-lg">
+                <span class="mr-2">🎵</span>
+                <span class="rainbow-text font-black underline decoration-teal-300 decoration-2">Welcome, my
+                    friend!</span>
+                <span class="ml-2">✨</span>
+            </p>
+            <br>
+            <div class="mx-auto relative mb-10">
+                <blockquote class="mb-6 text-balance text-3xl font-black tracking-tight drop-shadow-lg sm:text-6xl">
+                    "<span id="quote" class="rainbow-text break-words">loading...</span>"
+                </blockquote>
+                <span class="mt-10 text-teal-200 text-lg font-bold text-teal-300 sm:text-xl/8">~
+                    <span id="author">loading...</span>
+                </span>
+            </div>
+            <p class="mt-6 text-indigo-200 text-lg max-w-2xl mx-auto">
+                Share the soundtrack of your journey — whether it's today's mood
+                <span class="text-teal-300">✨</span>
+                or the song that inspires you the most
             </p>
 
-            <blockquote id="quote" class="mt-4 text-balance text-5xl font-black tracking-tight text-gray-900 sm:text-">
-                loading...
-            </blockquote>
-            <p class="mt-6 text-lg font-bold text-gray-900 sm:text-xl/8">~ <span id="author">loading...</span>
-            </p>
+            <div class="mt-10 flex flex-col items-center justify-center gap-y-4">
+                <!-- Music Controls -->
+                <div
+                    class="flex items-center gap-x-3 bg-indigo-950/50 rounded-full px-4 py-2 border border-indigo-400/20">
+                    <button onclick="toggleMusic()"
+                        class="flex items-center gap-x-2 text-indigo-200 hover:text-white transition-colors">
+                        <span id="playIcon" class="text-xl">▶️</span>
+                        <span id="pauseIcon" class="text-xl hidden">⏸️</span>
+                        <span id="musicStatus">Play "Story of My Life"</span>
+                    </button>
+                    <!-- Audio Wave Animation -->
+                    <div id="audioWaves" class="hidden space-x-1">
+                        <span
+                            class="inline-block w-1 h-3 bg-teal-400 rounded-full animate-[soundwave_0.5s_ease-in-out_infinite]"></span>
+                        <span
+                            class="inline-block w-1 h-4 bg-teal-400 rounded-full animate-[soundwave_0.5s_ease-in-out_infinite_0.1s]"></span>
+                        <span
+                            class="inline-block w-1 h-2 bg-teal-400 rounded-full animate-[soundwave_0.5s_ease-in-out_infinite_0.2s]"></span>
+                        <span
+                            class="inline-block w-1 h-3 bg-teal-400 rounded-full animate-[soundwave_0.5s_ease-in-out_infinite_0.3s]"></span>
+                    </div>
+                </div>
 
-            <div class="mt-10 flex items-center justify-center gap-x-6">
-                <a href="/"
-                    class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-base font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">
-                    Join To Share Your Story -></a>
+                <!-- Your existing Share button -->
+                <a href="/" class="rounded-md bg-gradient-to-r from-indigo-600 to-purple-500 px-5 py-3 text-base font-bold text-white shadow-lg 
+                    hover:from-indigo-500 hover:to-purple-400 hover:text-white hover:shadow-2xl hover:-translate-y-1 
+                    transform transition-all duration-200 ease-in-out
+                    focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-300
+                    border-2 border-indigo-400/20 backdrop-blur-sm">
+                    Share Your Story Through Music →
+                </a>
             </div>
         </div>
     </main>
 
     <script>
-        const _quote = document.getElementById("quote");
-        const _author = document.getElementById("author");
-        const api = "/api/quote";
+        const quoteElement = document.getElementById('quote');
+        const authorElement = document.getElementById('author');
 
-        function getQuote(url) {
-            fetch(url)
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error("Network response was not ok");
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    _quote.innerHTML = data.quote;
-                    _author.innerHTML = data.author;
-                })
-                .catch(error => {
-                    console.error("Fetch error: " + error);
-                });
+        async function fetchQuote() {
+            try {
+                const response = await fetch('/api/quote');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+
+                quoteElement.innerHTML = data.quote;
+                authorElement.innerHTML = data.author;
+            } catch (error) {
+                console.error('Error fetching quote:', error);
+                quoteElement.textContent = 'Life is what happens while you are busy making other plans.';
+                authorElement.textContent = 'John Lennon';
+            }
         }
 
-        getQuote(api);
+        fetchQuote();
+
+        const bgMusic = document.getElementById("bgMusic");
+        const playIcon = document.getElementById('playIcon');
+        const pauseIcon = document.getElementById('pauseIcon');
+        const musicStatus = document.getElementById('musicStatus');
+        const audioWaves = document.getElementById('audioWaves');
+
+        let hasInteracted = false;
+
+        // Try to play music after first interaction
+        document.addEventListener('click', async () => {
+            if (!hasInteracted) {
+                hasInteracted = true;
+                try {
+                    await bgMusic.play();
+                    playIcon.classList.add('hidden');
+                    pauseIcon.classList.remove('hidden');
+                    musicStatus.textContent = 'Now Playing';
+                    audioWaves.classList.remove('hidden');
+                } catch (err) {
+                    console.log('Failed to play audio:', err);
+                }
+            }
+        }, { once: true }); // This ensures the event listener only fires once
+
+        function toggleMusic() {
+            if (bgMusic.paused) {
+                bgMusic.play();
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+                musicStatus.textContent = 'Now Playing';
+                audioWaves.classList.remove('hidden');
+                console.log('Playing music');
+            } else {
+                bgMusic.pause();
+                playIcon.classList.remove('hidden');
+                pauseIcon.classList.add('hidden');
+                musicStatus.textContent = 'Play "Story of My Life"';
+                audioWaves.classList.add('hidden');
+                localStorage.removeItem('musicPlaying');
+                localStorage.removeItem('musicTime');
+                console.log('Pausing music');
+            }
+        }
+
+        // Add error handling
+        bgMusic.addEventListener('error', (e) => {
+            console.error('Error loading audio:', e);
+        });
+
+        // Add load success handling
+        bgMusic.addEventListener('loadeddata', () => {
+            console.log('Audio loaded successfully');
+        });
     </script>
 </body>
 

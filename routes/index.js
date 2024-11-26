@@ -11,8 +11,9 @@ router.get("/api/quote", async (req, res) => {
         const response = await fetch(process.env.API_URL_2);
         const data = await response.json();
 
-        if (!data) {
-            return res.status(404).json({ error: `Failed to fetch quote: ${data.error}` });
+        if (data === null) {
+            console.error('No data received from the API');
+            return res.status(404).json({ error: 'No data received from the API' });
         }
 
         res.status(200).json(data);

@@ -1,7 +1,8 @@
 {
   "name": "my-story-portal",
   "scripts": {
-    "dev": "nodemon app.js"
+    "dev": "nodemon app.js",
+    "build": "tailwindcss -i ./public/input.css -o ./public/output.css --watch"
   },
   "dependencies": {
     "cors": "^2.8.5",
