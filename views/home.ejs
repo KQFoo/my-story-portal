@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Portal</title>
+    <link rel="stylesheet" href="/css/style.css">
+    <link href="/output.css" rel="stylesheet" type="text/css">
+</head>
+
+<body class="bg-gray-100">
+    <header class="bg-white shadow-md fixed top-0 w-full z-10 p-4">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-800">Chat Portal</h1>
+            <div class="text-gray-600">
+                <span>👥 Users Online: <span id="onlineCount" class="font-semibold">0</span></span>
+            </div>
+        </div>
+    </header>
+
+    <div class="container mx-auto mt-20 mb-24 p-4">
+        <div class="mb-4 flex gap-2">
+            <input type="date" id="searchDate" class="rounded-lg border border-gray-300 p-2"
+                onchange="filterByDate(this.value)">
+            <button onclick="resetSearch()" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">
+                Reset
+            </button>
+        </div>
+
+        <div class="space-y-4 mb-20">
+            <% posts.reverse().forEach(post=> { %>
+                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow">
+                    <div class="flex justify-between items-start">
+                        <h3 class="text-lg font-semibold text-gray-800">
+                            <%= post.title %>
+                        </h3>
+                        <span class="text-sm text-gray-500">
+                            <%= post.createdAt.toLocaleDateString() %> •
+                                👁️ <span class="view-count">
+                                    <%= post.views %>
+                                </span>
+                        </span>
+                    </div>
+                    <p class="text-gray-600 mt-2">
+                        <%= post.content %>
+                    </p>
+                    <% if (post.videoUrl) { %>
+                        <div class="mt-3 video-container">
+                            <div class="video-embed aspect-video rounded-lg overflow-hidden"
+                                data-url="<%= post.videoUrl %>"></div>
+                        </div>
+                        <% } %>
+                </div>
+                <% }) %>
+        </div>
+    </div>
+
+    <div class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-4">
+        <form id="storyForm" action="/posts/create" method="POST" class="container mx-auto flex flex-col gap-2">
+            <div class="flex gap-2">
+                <input type="text" name="title" placeholder="Title" required
+                    class="flex-1 rounded-lg border border-gray-300 p-2">
+                <input type="url" name="videoUrl" placeholder="Video URL"
+                    class="flex-1 rounded-lg border border-gray-300 p-2">
+            </div>
+            <div class="flex gap-2">
+                <textarea name="content" placeholder="Type your message..." required
+                    class="flex-1 rounded-lg border border-gray-300 p-2 h-12 resize-none"></textarea>
+                <button type="submit" class="bg-blue-500 text-white px-6 rounded-lg hover:bg-blue-600">
+                    Send
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io();
+
+        // Handle online users count
+        socket.on('updateOnlineUsers', (count) => {
+            document.getElementById('onlineCount').textContent = count;
+        });
+
+        // Function to filter posts by date
+        function filterByDate(date) {
+            window.location.href = `/posts?date=${date}`;
+        }
+
+        // Function to reset search
+        function resetSearch() {
+            window.location.href = '/';
+        }
+
+        // Handle video embeds
+        document.addEventListener('DOMContentLoaded', () => {
+            const videoContainers = document.querySelectorAll('.video-embed');
+            videoContainers.forEach(container => {
+                const url = container.dataset.url;
+                // Add logic to embed videos based on URL (YouTube, Vimeo, etc.)
+                // This is a simplified example for YouTube
+                if (url.includes('youtube.com') || url.includes('youtu.be')) {
+                    const videoId = extractYouTubeId(url);
+                    container.innerHTML = `<iframe width="560" height="315" 
+                        src="https://www.youtube.com/embed/${videoId}" 
+                        frameborder="0" allowfullscreen></iframe>`;
+                }
+            });
+        });
+
+        function extractYouTubeId(url) {
+            // Add YouTube URL parsing logic here
+            // This is a simplified version
+            return url.split('v=')[1] || url.split('/').pop();
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,17 @@
+<div class="post-container">
+    <h2>
+        <%= retrievedPost.title %>
+    </h2>
+    <p class="story">
+        <%= retrievedPost.post_content %>
+    </p>
+
+    <div class="music-player">
+        <% if (retrievedPost.music_platform==='youtube' ) { %>
+            <iframe width="560" height="315" src="<%= retrievedPost.embed_url %>" frameborder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowfullscreen>
+            </iframe>
+            <% } %>
+    </div>
+</div>

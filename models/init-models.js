@@ -6,8 +6,8 @@ function initModels(sequelize) {
     var user = _user(sequelize, DataTypes);
     var post = _post(sequelize, DataTypes);
 
-    user.hasMany(post, { foreignKey: 'user_id' });
-    post.belongsTo(user, { foreignKey: 'user_id' });
+    post.belongsTo(user, { as: 'user', foreignKey: 'user_id' });
+    user.hasMany(post, { as: 'posts', foreignKey: 'user_id' });
 
     return {
         user,

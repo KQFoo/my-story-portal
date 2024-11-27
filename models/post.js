@@ -24,6 +24,11 @@ module.exports = function (sequelize, DataTypes) {
             type: DataTypes.TEXT,
             allowNull: false
         },
+        views: {
+            type: DataTypes.INTEGER,
+            allowNull: false,
+            defaultValue: 0
+        },
         music_url: {
             type: DataTypes.STRING(255),
             isUrl: true,
@@ -55,6 +60,14 @@ module.exports = function (sequelize, DataTypes) {
         createdAt: 'created_at',
         updatedAt: 'updated_at',
         indexes: [
+            {
+                name: 'PRIMARY',
+                unique: true,
+                using: 'BTREE',
+                fields: [{
+                    name: 'post_id'
+                }]
+            },
             {
                 name: 'post_user_id_fk',
                 using: 'BTREE',

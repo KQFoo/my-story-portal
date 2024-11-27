@@ -1,10 +1,21 @@
 const express = require("express");
 const router = express.Router();
+const postRoutes = require("./postRoutes");
 require("dotenv").config();
 
 router.get("/", (req, res) => {
     res.render("index");
 });
+
+router.get("/home", (req, res) => {
+    res.render("home");
+});
+
+router.get("/create-post", (req, res) => {
+    res.render("create-post");
+});
+
+router.use("/post", postRoutes);
 
 router.get("/api/quote", async (req, res) => {
     try {
