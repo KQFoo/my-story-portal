@@ -4,115 +4,232 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chat Portal</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <title>My Story Portal</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
     <link href="/output.css" rel="stylesheet" type="text/css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        @keyframes gradient {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        .animated-bg {
+            background: linear-gradient(-45deg,
+                    #1e1b4b,
+                    /* Deep indigo */
+                    #0f766e,
+                    /* Dark teal */
+                    #312e81,
+                    /* Rich indigo */
+                    #0d9488);
+            /* Teal */
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
+        .rainbow-text {
+            background: linear-gradient(-45deg,
+                    #2dd4bf,
+                    /* Teal */
+                    #818cf8,
+                    /* Indigo */
+                    #f472b6,
+                    /* Pink */
+                    #34d399);
+            /* Emerald */
+            background-size: 200% auto;
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: textGradient 5s linear infinite;
+        }
+
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+
+        .card-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+        }
+    </style>
 </head>
 
-<body class="bg-gray-100">
-    <header class="bg-white shadow-md fixed top-0 w-full z-10 p-4">
-        <div class="container mx-auto flex justify-between items-center">
-            <h1 class="text-2xl font-bold text-gray-800">Chat Portal</h1>
-            <div class="text-gray-600">
-                <span>👥 Users Online: <span id="onlineCount" class="font-semibold">0</span></span>
+<body class="animated-bg min-h-screen text-gray-100">
+    <!-- Enhanced Header - More Mobile Friendly -->
+    <header class="bg-indigo-950/80 backdrop-blur-md shadow-xl fixed top-0 w-full z-10 border-b border-teal-400/20">
+        <div class="w-full max-w-md sm:max-w-4xl mx-auto flex flex-col items-center px-3 py-4 gap-2">
+            <h1 class="text-2xl font-black tracking-tight">
+                <span class="rainbow-text">My Story Portal</span>
+            </h1>
+            <div class="text-teal-200 bg-teal-900/30 px-3 py-1.5 rounded-full text-xs 
+                            border border-teal-400/20 shadow-inner flex items-center gap-1.5">
+                <div class="w-1.5 h-1.5 bg-teal-400 rounded-full animate-pulse"></div>
+                <span>Online: <span id="onlineCount" class="font-semibold">0</span></span>
             </div>
         </div>
     </header>
 
-    <div class="container mx-auto mt-20 mb-24 p-4">
-        <div class="mb-4 flex gap-2">
-            <input type="date" id="searchDate" class="rounded-lg border border-gray-300 p-2"
-                onchange="filterByDate(this.value)">
-            <button onclick="resetSearch()" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600">
+    <!-- Enhanced Content Container -->
+    <div class="w-full max-w-md sm:max-w-2xl mx-auto mt-32 mb-20 px-3">
+        <!-- Search Section -->
+        <div class="flex gap-2 mb-4">
+            <div class="relative flex-1">
+                <input type="date" id="searchDate" class="w-full rounded-lg border border-teal-400/20 pl-8 pr-2 py-1.5 
+                    bg-indigo-950/70 text-teal-100 text-sm">
+                <svg xmlns="http://www.w3.org/2000/svg"
+                    class="h-3.5 w-3.5 absolute left-2.5 top-1/2 transform -translate-y-1/2 text-indigo-400" fill="none"
+                    viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+            </div>
+            <button onclick="resetSearch()" class="px-3 py-1.5 rounded-lg bg-teal-600/20 text-teal-100 
+                border border-teal-400/20 hover:bg-teal-600/30 text-sm">
                 Reset
             </button>
         </div>
 
-        <div class="space-y-4 mb-20">
-            <% posts.reverse().forEach(post=> { %>
-                <div class="bg-white rounded-lg shadow-md p-4 hover:shadow-lg transition-shadow">
-                    <div class="flex justify-between items-start">
-                        <h3 class="text-lg font-semibold text-gray-800">
+        <!-- Posts Section -->
+        <div class="space-y-2">
+            <% if (posts && posts.length> 0) { %>
+                <% posts.forEach(post=> { %>
+                    <div class="bg-indigo-950/70 backdrop-blur-md p-3 
+                               border border-teal-400/20 shadow-lg">
+                        <h3 class="text-lg font-semibold rainbow-text mb-2">
                             <%= post.title %>
                         </h3>
-                        <span class="text-sm text-gray-500">
-                            <%= post.createdAt.toLocaleDateString() %> •
-                                👁️ <span class="view-count">
-                                    <%= post.views %>
-                                </span>
-                        </span>
+                        <p class="text-sm text-gray-300 leading-relaxed mb-2.5">
+                            <%= post.post_content %>
+                        </p>
+
+                        <% if (post.embed_url) { %>
+                            <div class="mb-3 rounded-lg overflow-hidden shadow-xl">
+                                <div class="video-wrapper relative w-full pt-[56.25%] rounded-lg overflow-hidden">
+                                    <iframe class="absolute top-0 left-0 w-full h-full" src="<%= post.embed_url %>"
+                                        frameborder="0"
+                                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                        allowfullscreen>
+                                    </iframe>
+                                </div>
+                            </div>
+                            <% } %>
+
+                                <!-- Post Metadata -->
+                                <div class="flex flex-col gap-2">
+                                    <div class="flex items-center gap-2">
+                                        <span class="text-xs text-teal-200 bg-teal-900/30 px-2.5 py-1 rounded-full
+                                               shadow-inner border border-teal-400/20">
+                                            @<%= post.username %>
+                                        </span>
+                                        <span class="text-xs text-teal-200 bg-teal-900/30 px-2.5 py-1 rounded-full
+                                               shadow-inner border border-teal-400/20">
+                                            <%= post.views %> views
+                                        </span>
+                                    </div>
+                                    <span class="text-xs text-teal-200 bg-teal-900/30 px-2.5 py-1 rounded-full
+                                           shadow-inner border border-teal-400/20 w-fit">
+                                        <%= post.created_at ? new Date(post.created_at).toLocaleDateString()
+                                            : 'Date not available' %>
+                                    </span>
+                                </div>
                     </div>
-                    <p class="text-gray-600 mt-2">
-                        <%= post.content %>
-                    </p>
-                    <% if (post.videoUrl) { %>
-                        <div class="mt-3 video-container">
-                            <div class="video-embed aspect-video rounded-lg overflow-hidden"
-                                data-url="<%= post.videoUrl %>"></div>
-                        </div>
-                        <% } %>
-                </div>
-                <% }) %>
+                    <% }); %>
+                        <% } else { %>
+                            <div class="text-center bg-indigo-950/70 p-8 border border-teal-400/20 shadow-lg">
+                                <div class="text-4xl mb-3">✨</div>
+                                <p class="text-lg font-semibold mb-2 text-teal-100">No stories yet</p>
+                                <p class="text-sm text-teal-300">Be the first to share your story!</p>
+                            </div>
+                            <% } %>
         </div>
     </div>
 
-    <div class="fixed bottom-0 left-0 right-0 bg-white border-t shadow-lg p-4">
-        <form id="storyForm" action="/posts/create" method="POST" class="container mx-auto flex flex-col gap-2">
-            <div class="flex gap-2">
-                <input type="text" name="title" placeholder="Title" required
-                    class="flex-1 rounded-lg border border-gray-300 p-2">
-                <input type="url" name="videoUrl" placeholder="Video URL"
-                    class="flex-1 rounded-lg border border-gray-300 p-2">
-            </div>
-            <div class="flex gap-2">
-                <textarea name="content" placeholder="Type your message..." required
-                    class="flex-1 rounded-lg border border-gray-300 p-2 h-12 resize-none"></textarea>
-                <button type="submit" class="bg-blue-500 text-white px-6 rounded-lg hover:bg-blue-600">
-                    Send
+    <!-- Form Section -->
+    <div id="formSection" class="fixed bottom-0 left-0 right-0 bg-indigo-950/95 backdrop-blur-md 
+                                    border-t border-indigo-400/30 shadow-2xl">
+        <button id="toggleForm" class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-indigo-950/95 
+                       text-indigo-200 px-4 py-1.5 rounded-t-lg border border-indigo-400/30 
+                       hover:bg-indigo-900/95 transition-all duration-300">
+            <span id="toggleIcon" class="text-base">▲</span>
+        </button>
+
+        <div id="formContent" class="p-4 hidden">
+            <form id="storyForm" action="/post/create" method="POST"
+                class="w-full max-w-md mx-auto flex flex-col gap-3">
+                <input type="text" name="title" placeholder="Title" required class="w-full rounded-xl border-2 border-indigo-400/20 px-4 py-2.5 
+                               bg-indigo-950/50 text-indigo-200 placeholder-indigo-400/50 
+                               focus:ring-2 focus:ring-indigo-400/40 focus:border-indigo-400/40 
+                               focus:outline-none transition-all duration-300">
+
+                <input type="url" name="music_url" placeholder="YouTube Music URL" class="w-full rounded-xl border-2 border-indigo-400/20 px-4 py-2.5 
+                               bg-indigo-950/50 text-indigo-200 placeholder-indigo-400/50 
+                               focus:ring-2 focus:ring-indigo-400/40 focus:border-indigo-400/40 
+                               focus:outline-none transition-all duration-300">
+
+                <textarea name="post_content" placeholder="Share your story..." required class="w-full rounded-xl border-2 border-indigo-400/20 px-4 py-2.5 
+                               h-24 resize-none bg-indigo-950/50 text-indigo-200 
+                               placeholder-indigo-400/50 focus:ring-2 focus:ring-indigo-400/40 
+                               focus:border-indigo-400/40 focus:outline-none transition-all duration-300"></textarea>
+
+                <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 
+                               text-white px-4 py-2.5 rounded-xl hover:from-indigo-500 
+                               hover:to-purple-500 transition-all duration-300 shadow-lg 
+                               hover:shadow-indigo-500/25 font-medium">
+                    Share Story
                 </button>
-            </div>
-        </form>
+            </form>
+        </div>
     </div>
 
     <script src="/socket.io/socket.io.js"></script>
     <script>
-        const socket = io();
+        document.addEventListener('DOMContentLoaded', () => {
+            const toggleBtn = document.getElementById('toggleForm');
+            const formContent = document.getElementById('formContent');
+            const toggleIcon = document.getElementById('toggleIcon');
 
-        // Handle online users count
-        socket.on('updateOnlineUsers', (count) => {
-            document.getElementById('onlineCount').textContent = count;
+            if (toggleBtn && formContent && toggleIcon) {
+                toggleBtn.addEventListener('click', () => {
+                    formContent.classList.toggle('hidden');
+                    toggleIcon.textContent = formContent.classList.contains('hidden') ? '▲' : '▼';
+                });
+            } else {
+                console.error('Toggle button or form content not found');
+            }
         });
 
-        // Function to filter posts by date
-        function filterByDate(date) {
-            window.location.href = `/posts?date=${date}`;
+        try {
+            const socket = io();
+            socket.on('updateOnlineUsers', (count) => {
+                document.getElementById('onlineCount').textContent = count;
+            });
+        } catch (error) {
+            console.warn('Socket connection failed:', error);
         }
 
-        // Function to reset search
+        function filterByDate(date) {
+            if (!date) return;
+            const formattedDate = new Date(date).toISOString().split('T')[0];
+            window.location.href = `/posts?date=${formattedDate}`;
+        }
+
         function resetSearch() {
             window.location.href = '/';
-        }
-
-        // Handle video embeds
-        document.addEventListener('DOMContentLoaded', () => {
-            const videoContainers = document.querySelectorAll('.video-embed');
-            videoContainers.forEach(container => {
-                const url = container.dataset.url;
-                // Add logic to embed videos based on URL (YouTube, Vimeo, etc.)
-                // This is a simplified example for YouTube
-                if (url.includes('youtube.com') || url.includes('youtu.be')) {
-                    const videoId = extractYouTubeId(url);
-                    container.innerHTML = `<iframe width="560" height="315" 
-                        src="https://www.youtube.com/embed/${videoId}" 
-                        frameborder="0" allowfullscreen></iframe>`;
-                }
-            });
-        });
-
-        function extractYouTubeId(url) {
-            // Add YouTube URL parsing logic here
-            // This is a simplified version
-            return url.split('v=')[1] || url.split('/').pop();
         }
     </script>
 </body>

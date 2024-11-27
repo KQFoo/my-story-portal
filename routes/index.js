@@ -2,13 +2,23 @@ const express = require("express");
 const router = express.Router();
 const postRoutes = require("./postRoutes");
 require("dotenv").config();
+const db = require('../config/db');
+const { post } = db.models;
 
 router.get("/", (req, res) => {
     res.render("index");
 });
 
-router.get("/home", (req, res) => {
-    res.render("home");
+router.get("/home", async (req, res) => {
+    try {
+        const posts = await post.findAll({
+            order: [['created_at', 'DESC']]
+        });
+        res.render("home", { posts });
+    } catch (error) {
+        console.error('Error fetching posts:', error);
+        res.status(500).render('error', { message: 'Error loading posts' });
+    }
 });
 
 router.get("/create-post", (req, res) => {
