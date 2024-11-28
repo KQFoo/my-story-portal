@@ -13,6 +13,16 @@
             font-family: 'Inter', sans-serif;
         }
 
+        .animated-header {
+            background: linear-gradient(-45deg,
+                    #1e1b4b,
+                    #0f766e,
+                    #312e81,
+                    #0d9488);
+            background-size: 400% 400%;
+            animation: gradient 15s ease infinite;
+        }
+
         @keyframes gradient {
             0% {
                 background-position: 0% 50%;
@@ -27,30 +37,12 @@
             }
         }
 
-        .animated-bg {
-            background: linear-gradient(-45deg,
-                    #1e1b4b,
-                    /* Deep indigo */
-                    #0f766e,
-                    /* Dark teal */
-                    #312e81,
-                    /* Rich indigo */
-                    #0d9488);
-            /* Teal */
-            background-size: 400% 400%;
-            animation: gradient 15s ease infinite;
-        }
-
         .rainbow-text {
             background: linear-gradient(-45deg,
                     #2dd4bf,
-                    /* Teal */
                     #818cf8,
-                    /* Indigo */
                     #f472b6,
-                    /* Pink */
                     #34d399);
-            /* Emerald */
             background-size: 200% auto;
             -webkit-background-clip: text;
             background-clip: text;
@@ -64,14 +56,14 @@
 
         .card-hover:hover {
             transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
     </style>
 </head>
 
-<body class="animated-bg min-h-screen text-gray-100">
+<body class="min-h-screen text-gray-100 bg-[#0F172A]">
     <!-- Enhanced Header - More Mobile Friendly -->
-    <header class="bg-indigo-950/80 backdrop-blur-md shadow-xl fixed top-0 w-full z-10 border-b border-teal-400/20">
+    <header class="animated-header shadow-md fixed top-0 w-full z-10 border-b border-teal-400/20">
         <div class="w-full max-w-md sm:max-w-4xl mx-auto flex flex-col items-center px-3 py-4 gap-2">
             <h1 class="text-2xl font-black tracking-tight">
                 <span class="rainbow-text">My Story Portal</span>
@@ -86,19 +78,23 @@
 
     <!-- Enhanced Content Container -->
     <div class="w-full max-w-md sm:max-w-2xl mx-auto mt-32 mb-20 px-3">
+        <!-- Welcome message -->
+        <div class="mb-4 text-teal-200 bg-teal-900/30 px-3 py-1.5 rounded-full text-sm 
+                    border border-teal-400/20 shadow-inner flex items-center justify-center">
+            Welcome, <%= username %>!
+        </div>
         <!-- Search Section -->
         <div class="flex gap-2 mb-4">
             <div class="relative flex-1">
-                <input type="date" id="searchDate" class="w-full rounded-lg border border-teal-400/20 pl-8 pr-2 py-1.5 
-                    bg-indigo-950/70 text-teal-100 text-sm">
-                <svg xmlns="http://www.w3.org/2000/svg"
-                    class="h-3.5 w-3.5 absolute left-2.5 top-1/2 transform -translate-y-1/2 text-indigo-400" fill="none"
-                    viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
+                <input type="date" id="searchDate" onchange="filterByDate(this.value)"
+                    class="w-full rounded-lg border border-teal-400/20 px-4 py-2 
+                    bg-[#1E293B] text-teal-100 text-sm
+                    focus:ring-2 focus:ring-teal-400/40 focus:border-teal-400/40 
+                    hover:border-teal-400/40
+                    [&::-webkit-calendar-picker-indicator]:invert
+                    [&::-webkit-calendar-picker-indicator]:opacity-50 [&::-webkit-calendar-picker-indicator]:hover:opacity-100">
             </div>
-            <button onclick="resetSearch()" class="px-3 py-1.5 rounded-lg bg-teal-600/20 text-teal-100 
+            <button id="resetSearchBtn" class="px-3 py-1.5 rounded-lg bg-teal-600/20 text-teal-100 
                 border border-teal-400/20 hover:bg-teal-600/30 text-sm">
                 Reset
             </button>
@@ -108,9 +104,9 @@
         <div class="space-y-2">
             <% if (posts && posts.length> 0) { %>
                 <% posts.forEach(post=> { %>
-                    <div class="bg-indigo-950/70 backdrop-blur-md p-3 
-                               border border-teal-400/20 shadow-lg">
-                        <h3 class="text-lg font-semibold rainbow-text mb-2">
+                    <div class="bg-[#1E293B] p-3 border border-teal-400/20 shadow-md"
+                        data-post-id="<%= post.post_id %>">
+                        <h3 class="text-lg font-black rainbow-text mb-2">
                             <%= post.title %>
                         </h3>
                         <p class="text-sm text-gray-300 leading-relaxed mb-2.5">
@@ -132,17 +128,17 @@
                                 <!-- Post Metadata -->
                                 <div class="flex flex-col gap-2">
                                     <div class="flex items-center gap-2">
-                                        <span class="text-xs text-teal-200 bg-teal-900/30 px-2.5 py-1 rounded-full
-                                               shadow-inner border border-teal-400/20">
-                                            @<%= post.username %>
+                                        <span class="text-xs text-teal-200 bg-[#0F172A] px-2.5 py-1 rounded-full 
+                                               border border-teal-400/20">
+                                            @<%= username %>
                                         </span>
-                                        <span class="text-xs text-teal-200 bg-teal-900/30 px-2.5 py-1 rounded-full
-                                               shadow-inner border border-teal-400/20">
+                                        <span
+                                            class="text-xs text-teal-200 bg-[#0F172A] px-2.5 py-1 rounded-full border border-teal-400/20 view-count">
                                             <%= post.views %> views
                                         </span>
                                     </div>
-                                    <span class="text-xs text-teal-200 bg-teal-900/30 px-2.5 py-1 rounded-full
-                                           shadow-inner border border-teal-400/20 w-fit">
+                                    <span class="text-xs text-teal-200 bg-[#0F172A] px-2.5 py-1 rounded-full
+                                           border border-teal-400/20 w-fit">
                                         <%= post.created_at ? new Date(post.created_at).toLocaleDateString()
                                             : 'Date not available' %>
                                     </span>
@@ -152,47 +148,58 @@
                         <% } else { %>
                             <div class="text-center bg-indigo-950/70 p-8 border border-teal-400/20 shadow-lg">
                                 <div class="text-4xl mb-3">✨</div>
-                                <p class="text-lg font-semibold mb-2 text-teal-100">No stories yet</p>
-                                <p class="text-sm text-teal-300">Be the first to share your story!</p>
+                                <p class="text-lg font-semibold mb-2 text-teal-100">No stories found</p>
+                                <!-- <p class="text-sm text-teal-300">Be the first to share your story!</p> -->
                             </div>
                             <% } %>
         </div>
     </div>
 
     <!-- Form Section -->
-    <div id="formSection" class="fixed bottom-0 left-0 right-0 bg-indigo-950/95 backdrop-blur-md 
-                                    border-t border-indigo-400/30 shadow-2xl">
-        <button id="toggleForm" class="absolute -top-8 left-1/2 transform -translate-x-1/2 bg-indigo-950/95 
-                       text-indigo-200 px-4 py-1.5 rounded-t-lg border border-indigo-400/30 
-                       hover:bg-indigo-900/95 transition-all duration-300">
+    <div id="formSection" class="fixed bottom-0 left-0 right-0 bg-[#1E293B] 
+                            border-t border-teal-400/20 shadow-md">
+        <button id="toggleForm" class="absolute -top-8 left-1/2 transform -translate-x-1/2 
+                   bg-[#1E293B] text-teal-200 px-4 py-1.5 rounded-t-lg 
+                   border border-teal-400/20">
             <span id="toggleIcon" class="text-base">▲</span>
         </button>
 
         <div id="formContent" class="p-4 hidden">
-            <form id="storyForm" action="/post/create" method="POST"
-                class="w-full max-w-md mx-auto flex flex-col gap-3">
-                <input type="text" name="title" placeholder="Title" required class="w-full rounded-xl border-2 border-indigo-400/20 px-4 py-2.5 
-                               bg-indigo-950/50 text-indigo-200 placeholder-indigo-400/50 
-                               focus:ring-2 focus:ring-indigo-400/40 focus:border-indigo-400/40 
-                               focus:outline-none transition-all duration-300">
+            <% if (messages.error) { %>
+                <div class="mb-4 p-3 rounded-lg bg-red-500/20 border border-red-400/30 text-red-200">
+                    <%= messages.error %>
+                </div>
+                <% } %>
+                    <% if (messages.success) { %>
+                        <div class="mb-4 p-3 rounded-lg bg-green-500/20 border border-green-400/30 text-green-200">
+                            <%= messages.success %>
+                        </div>
+                        <% } %>
+                            <form id="storyForm" class="w-full max-w-md mx-auto flex flex-col gap-3">
+                                <input type="text" name="title" placeholder="Title of your story" required class="w-full rounded-xl border-2 border-teal-400/20 px-4 py-2.5 
+                                    bg-[#0F172A] text-teal-100 placeholder-teal-400/50 
+                                    focus:ring-2 focus:ring-teal-400/40 focus:border-teal-400/40 
+                                    focus:outline-none transition-all duration-300">
 
-                <input type="url" name="music_url" placeholder="YouTube Music URL" class="w-full rounded-xl border-2 border-indigo-400/20 px-4 py-2.5 
-                               bg-indigo-950/50 text-indigo-200 placeholder-indigo-400/50 
-                               focus:ring-2 focus:ring-indigo-400/40 focus:border-indigo-400/40 
-                               focus:outline-none transition-all duration-300">
+                                <input type="url" name="music_url" placeholder="Paste YouTube URL (music preferred)"
+                                    class="w-full rounded-xl border-2 border-teal-400/20 px-4 py-2.5 
+                                              bg-[#0F172A] text-teal-100 placeholder-teal-400/50 
+                                              focus:ring-2 focus:ring-teal-400/40 focus:border-teal-400/40 
+                                              focus:outline-none transition-all duration-300">
 
-                <textarea name="post_content" placeholder="Share your story..." required class="w-full rounded-xl border-2 border-indigo-400/20 px-4 py-2.5 
-                               h-24 resize-none bg-indigo-950/50 text-indigo-200 
-                               placeholder-indigo-400/50 focus:ring-2 focus:ring-indigo-400/40 
-                               focus:border-indigo-400/40 focus:outline-none transition-all duration-300"></textarea>
+                                <textarea name="post_content" placeholder="Write your story here..." required
+                                    class="w-full rounded-xl border-2 border-teal-400/20 px-4 py-2.5 
+                                                 h-24 resize-none bg-[#0F172A] text-teal-100 
+                                                 placeholder-teal-400/50 focus:ring-2 focus:ring-teal-400/40 
+                                                 focus:border-teal-400/40 focus:outline-none transition-all duration-300"></textarea>
 
-                <button type="submit" class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 
-                               text-white px-4 py-2.5 rounded-xl hover:from-indigo-500 
-                               hover:to-purple-500 transition-all duration-300 shadow-lg 
-                               hover:shadow-indigo-500/25 font-medium">
-                    Share Story
-                </button>
-            </form>
+                                <button type="submit" class="w-full bg-teal-600/20 text-teal-100 px-4 py-2.5 
+                                                       rounded-xl border border-teal-400/20 
+                                                       hover:bg-teal-600/30 transition-all duration-300 
+                                                       font-medium">
+                                    Share Your Story
+                                </button>
+                            </form>
         </div>
     </div>
 
@@ -202,35 +209,259 @@
             const toggleBtn = document.getElementById('toggleForm');
             const formContent = document.getElementById('formContent');
             const toggleIcon = document.getElementById('toggleIcon');
+            const storyForm = document.getElementById('storyForm');
 
             if (toggleBtn && formContent && toggleIcon) {
                 toggleBtn.addEventListener('click', () => {
                     formContent.classList.toggle('hidden');
                     toggleIcon.textContent = formContent.classList.contains('hidden') ? '▲' : '▼';
                 });
-            } else {
-                console.error('Toggle button or form content not found');
+            }
+
+            if (storyForm) {
+                storyForm.addEventListener('submit', submitStory);
+            }
+
+            // Add reset search button listener
+            const resetSearchBtn = document.getElementById('resetSearchBtn');
+            if (resetSearchBtn) {
+                resetSearchBtn.addEventListener('click', resetSearch);
             }
         });
 
+        // Socket.io connection
         try {
-            const socket = io();
+            const socket = io({
+                transports: ['websocket', 'polling'],
+                reconnection: true
+            });
+
+            socket.on('connect', () => {
+                console.log('Socket connected successfully');
+            });
+
             socket.on('updateOnlineUsers', (count) => {
                 document.getElementById('onlineCount').textContent = count;
+            });
+
+            socket.on('connect_error', (error) => {
+                console.warn('Socket connection error:', error);
             });
         } catch (error) {
             console.warn('Socket connection failed:', error);
         }
 
+        // Search functions
         function filterByDate(date) {
             if (!date) return;
             const formattedDate = new Date(date).toISOString().split('T')[0];
-            window.location.href = `/posts?date=${formattedDate}`;
+            window.location.href = `/post/filter?date=${formattedDate}`;
         }
 
         function resetSearch() {
-            window.location.href = '/';
+            const searchDate = document.getElementById('searchDate');
+            if (searchDate) {
+                searchDate.value = ''; // Clear the date input
+            }
+            window.location.reload();
         }
+
+        // Add notification function
+        function showNotification(message, type = 'success') {
+            const notification = document.createElement('div');
+            notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${type === 'success'
+                ? 'bg-green-500/20 border border-green-400/30 text-green-200'
+                : 'bg-red-500/20 border border-red-400/30 text-red-200'
+                }`;
+            notification.textContent = message;
+
+            document.body.appendChild(notification);
+
+            // Remove notification after 3 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 3000);
+        }
+
+        async function submitStory(event) {
+            event.preventDefault();
+            const form = event.target;
+            const submitButton = form.querySelector('button[type="submit"]');
+
+            // Add loading state
+            const originalButtonText = submitButton.innerHTML;
+            submitButton.disabled = true;
+            submitButton.innerHTML = `
+                <svg class="animate-spin h-5 w-5 mx-auto" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+            `;
+
+            const formData = new FormData(form);
+
+            try {
+                const response = await fetch('/post/create', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest'
+                    },
+                    body: JSON.stringify(Object.fromEntries(formData))
+                });
+
+                // Log the response details for debugging
+                // console.log('Response status:', response.status);
+                // console.log('Response headers:', response.headers);
+
+                let data;
+                const contentType = response.headers.get('content-type');
+
+                if (contentType && contentType.includes('application/json')) {
+                    data = await response.json();
+                } else {
+                    const text = await response.text();
+                    console.log('Response text:', text);
+                    try {
+                        data = JSON.parse(text);
+                    } catch (e) {
+                        throw new Error('Server returned invalid response format');
+                    }
+                }
+
+                if (data.success) {
+                    // Create new post HTML
+                    const postHTML = `
+                        <div class="bg-[#1E293B] p-3 border border-teal-400/20 shadow-md" data-post-id="${data.post.post_id}">
+                            <h3 class="text-lg font-black rainbow-text mb-2">
+                                ${data.post.title}
+                            </h3>
+                            <p class="text-sm text-gray-300 leading-relaxed mb-2.5">
+                                ${data.post.post_content}
+                            </p>
+                            ${data.post.embed_url ? `
+                                <div class="mb-3 rounded-lg overflow-hidden shadow-xl">
+                                    <div class="video-wrapper relative w-full pt-[56.25%] rounded-lg overflow-hidden">
+                                        <iframe class="absolute top-0 left-0 w-full h-full pointer-events-none" 
+                                                src="${data.post.embed_url}"
+                                                frameborder="0"
+                                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                                allowfullscreen>
+                                        </iframe>
+                                    </div>
+                                </div>
+                            ` : ''}
+                            <div class="flex flex-col gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-xs text-teal-200 bg-[#0F172A] px-2.5 py-1 rounded-full shadow-inner border border-teal-400/20">
+                                        @${data.post.username || 'anonymous'}
+                                    </span>
+                                    <span class="text-xs text-teal-200 bg-[#0F172A] px-2.5 py-1 rounded-full shadow-inner border border-teal-400/20 view-count">
+                                        ${data.post.views} views
+                                    </span>
+                                </div>
+                                <span class="text-xs text-teal-200 bg-[#0F172A] px-2.5 py-1 rounded-full shadow-inner border border-teal-400/20 w-fit">
+                                    ${new Date().toLocaleDateString()}
+                                </span>
+                            </div>
+                        </div>
+                    `;
+
+                    // Add new post to the top of the posts section
+                    const postsContainer = document.querySelector('.space-y-2');
+
+                    // Check if there's a "no stories" message and remove it
+                    const noStoriesMessage = postsContainer.querySelector(':scope > div:only-child');
+                    if (noStoriesMessage && noStoriesMessage.textContent.includes('No stories yet')) {
+                        noStoriesMessage.remove();
+                    }
+
+                    postsContainer.insertAdjacentHTML('afterbegin', postHTML);
+
+                    // Clear form
+                    form.reset();
+
+                    // Show success notification
+                    showNotification(data.message, 'success');
+
+                    // Close the form section
+                    document.getElementById('formContent').classList.add('hidden');
+                    document.getElementById('toggleIcon').textContent = '▲';
+                } else {
+                    showNotification(data.message || 'Failed to create post', 'error');
+                }
+            } catch (error) {
+                console.error('Error details:', error);
+                showNotification('Failed to create post. Please try again.', 'error');
+            } finally {
+                // Reset button state
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalButtonText;
+            }
+        }
+
+        // Add this after DOMContentLoaded
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.5 // post must be 50% visible
+        };
+
+        const viewedPosts = new Set(); // Track which posts have been viewed
+
+        // Function to increment post views
+        async function incrementPostViews(postId) {
+            // console.log('Attempting to increment views for post:', postId); // Debug log
+
+            try {
+                const response = await fetch(`/post/${postId}/increment-views`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                // console.log('Increment response:', response.status); // Debug log
+
+                if (response.ok) {
+                    const viewCountElement = document.querySelector(`[data-post-id="${postId}"] .view-count`);
+                    if (viewCountElement) {
+                        const currentViews = parseInt(viewCountElement.textContent);
+                        viewCountElement.textContent = `${currentViews + 1} views`;
+                        // console.log('Updated view count in UI for post:', postId); // Debug log
+                    }
+                }
+            } catch (error) {
+                console.error('Error incrementing views:', error);
+            }
+        }
+
+        const postObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    const postId = entry.target.dataset.postId;
+                    // console.log('Post visible:', postId); // Debug log
+                    // console.log('Already viewed:', viewedPosts.has(postId)); // Debug log
+
+                    if (!viewedPosts.has(postId)) {
+                        incrementPostViews(postId);
+                        viewedPosts.add(postId);
+                    }
+                }
+            });
+        }, observerOptions);
+
+        // Make sure posts are being observed
+        document.addEventListener('DOMContentLoaded', () => {
+            const posts = document.querySelectorAll('[data-post-id]');
+            // console.log('Found posts:', posts.length); // Debug log
+
+            posts.forEach(post => {
+                // console.log('Observing post:', post.dataset.postId); // Debug log
+                postObserver.observe(post);
+            });
+        });
     </script>
 </body>
 

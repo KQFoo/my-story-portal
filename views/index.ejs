@@ -130,7 +130,7 @@
                 </div>
 
                 <!-- Share button - Made more compact on mobile -->
-                <a href="/" class="w-full sm:w-auto rounded-md bg-gradient-to-r from-indigo-600 to-purple-500 
+                <a onclick="redirectWithUserId()" class="cursor-pointer w-full sm:w-auto rounded-md bg-gradient-to-r from-indigo-600 to-purple-500 
                     px-4 sm:px-5 py-2.5 sm:py-3 text-sm sm:text-base font-bold text-white shadow-lg 
                     hover:from-indigo-500 hover:to-purple-400 hover:text-white hover:shadow-2xl hover:-translate-y-1 
                     transform transition-all duration-200 ease-in-out
@@ -217,6 +217,49 @@
         // Add load success handling
         bgMusic.addEventListener('loadeddata', () => {
             console.log('Audio loaded successfully');
+        });
+
+        function redirectWithUserId() {
+            // Check if we already have a userId in localStorage
+            let username = localStorage.getItem('username');
+
+            // If not, create a new one and store it
+            if (!username) {
+                const randomNum = Math.floor(Math.random() * 10000);
+                username = 'User' + randomNum;
+                localStorage.setItem('username', username);
+            }
+
+            // Create user in database before redirecting
+            fetch('/api/users/create', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    username: username
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        window.location.href = `/home?username=${username}`;
+                    } else {
+                        console.error('Failed to create user:', data.message);
+                        window.location.href = '/';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error creating user:', error);
+                });
+        }
+
+        // Optional: Check if user already has an ID on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            const username = localStorage.getItem('username');
+            if (username) {
+                console.log('Welcome back,', username);
+            }
         });
     </script>
 </body>
