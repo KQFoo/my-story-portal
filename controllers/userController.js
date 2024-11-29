@@ -5,7 +5,6 @@ exports.createUser = async (req, res) => {
     try {
         const { username } = req.body;
 
-        // Check if user already exists
         let existingUser = await user.findOne({ where: { user_name: username } });
 
         if (existingUser) {
@@ -16,7 +15,6 @@ exports.createUser = async (req, res) => {
             });
         }
 
-        // Create new user
         const newUser = await user.create({ user_name: username });
 
         res.json({

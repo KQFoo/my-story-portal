@@ -1,27 +1,18 @@
 const MusicParser = require("../utils/musicParser");
 const db = require("../config/db");
-const { post } = db.models;
+const { post, user } = db.models;
 const { Op } = require('sequelize');
 
 exports.createPost = async (req, res) => {
     try {
-        const { title, post_content, music_url, username } = req.body;
+        const { title, post_content, music_url, username, userid } = req.body;
 
-        if (!username) {
+        if (!userid && !username) {
             return res.status(400).json({
                 success: false,
-                message: 'User ID is required'
+                message: 'User not found'
             });
         }
-
-        const userIdNum = parseInt(username.split('User')[1]);
-
-        let user = await db.models.user.findOrCreate({
-            where: { user_id: userIdNum },
-            defaults: {
-                user_name: username
-            }
-        });
 
         const parsedMusic = MusicParser.parseUrl(music_url);
 
@@ -33,7 +24,7 @@ exports.createPost = async (req, res) => {
         }
 
         const newPost = await post.create({
-            user_id: userIdNum,
+            user_id: userid,
             title,
             post_content,
             music_url,
@@ -45,7 +36,8 @@ exports.createPost = async (req, res) => {
         return res.status(201).json({
             success: true,
             message: 'Story shared successfully!',
-            post: newPost
+            post: newPost,
+            user_name: username,
         });
     } catch (error) {
         console.error('Post creation error:', error);
@@ -60,6 +52,8 @@ exports.createPost = async (req, res) => {
 exports.filterPostsByDate = async (req, res) => {
     try {
         const date = req.query.date;
+        const username = req.query.username;
+        const user_created = req.query.timestamp;
 
         if (!date || !Date.parse(date)) {
             return res.status(400).json({
@@ -81,11 +75,23 @@ exports.filterPostsByDate = async (req, res) => {
             order: [['created_at', 'DESC']]
         });
 
+        const u = await user.findOne({ where: { user_name: req.query.username, created_at: { [Op.gte]: req.query.timestamp - 60 * 60 * 1000 } } });
+        if (!u) {
+            return res.redirect("/");
+        }
+
+        const userids = await filteredPosts.map(post => post.user_id);
+        const users = await user.findAll({ where: { user_id: userids } });
+
         res.render('home', {
+            username: username || 'anonymous',
+            user: u,
             posts: filteredPosts,
+            users: users,
             filterDate: date,
-            noResults: filteredPosts.length === 0
+            noResults: filteredPosts.length === 0,
         });
+
     } catch (error) {
         console.error('Error filtering posts by date:', error);
         return res.status(500).json({
@@ -93,6 +99,22 @@ exports.filterPostsByDate = async (req, res) => {
             message: 'Error filtering posts by date',
             error: process.env.NODE_ENV === 'development' ? error.message : undefined
         });
+    }
+};
+
+exports.incrementViews = async (req, res) => {
+    try {
+        const { post_id } = req.params;
+
+        const result = await post.increment('views', {
+            by: 1,
+            where: { post_id }
+        });
+
+        return res.json({ success: true });
+    } catch (error) {
+        console.error('Error incrementing views:', error);
+        return res.status(500).json({ success: false });
     }
 };
 
@@ -118,19 +140,3 @@ exports.filterPostsByDate = async (req, res) => {
 //         });
 //     }
 // };
-
-exports.incrementViews = async (req, res) => {
-    try {
-        const { post_id } = req.params;
-
-        const result = await post.increment('views', {
-            by: 1,
-            where: { post_id }
-        });
-
-        return res.json({ success: true });
-    } catch (error) {
-        console.error('Error incrementing views:', error);
-        return res.status(500).json({ success: false });
-    }
-};

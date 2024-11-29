@@ -222,28 +222,44 @@
         function redirectWithUserId() {
             // Check if we already have a userId in localStorage
             let username = localStorage.getItem('username');
+            let user_created = localStorage.getItem('user_created');
 
             // If not, create a new one and store it
             if (!username) {
+                const timestamp = Date.now();
                 const randomNum = Math.floor(Math.random() * 10000);
+                user_created = timestamp;
                 username = 'User' + randomNum;
                 localStorage.setItem('username', username);
+                localStorage.setItem('user_created', user_created);
+
+                // console.log('New username created:', username);
+                // console.log('New timestamp created:', user_created);
             }
 
-            // Create user in database before redirecting
-            fetch('/api/users/create', {
+            username = localStorage.getItem('username') || 'anonymous';
+            user_created = localStorage.getItem('user_created');
+
+            // Check if local storage is still empty
+            if (username === null || user_created === null) {
+                console.error("Error: username or timestamp is null");
+                window.location.href = "/";
+            }
+
+            fetch('/user/create', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
                 body: JSON.stringify({
-                    username: username
+                    username: username,
                 })
             })
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        window.location.href = `/home?username=${username}`;
+                        window.location.href = `/home?username=${username}&timestamp=${user_created}`;
+
                     } else {
                         console.error('Failed to create user:', data.message);
                         window.location.href = '/';
@@ -254,11 +270,12 @@
                 });
         }
 
-        // Optional: Check if user already has an ID on page load
+        // Check if user already has an ID on page load
         document.addEventListener('DOMContentLoaded', () => {
             const username = localStorage.getItem('username');
-            if (username) {
-                console.log('Welcome back,', username);
+            const user_created = localStorage.getItem('user_created');
+            if (username && user_created) {
+                console.log('Welcome,', username);
             }
         });
     </script>

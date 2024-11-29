@@ -18,13 +18,13 @@ const io = socketIO(server);
 // Socket.IO connection handling
 io.on('connection', (socket) => {
     const index = io.engine.clientsCount;
-    console.log(`${index} user connected.`);
+    console.log(`User${index} connected.`);
 
     // Update online count for all users
     io.emit('updateOnlineUsers', io.engine.clientsCount);
 
     socket.on('disconnect', () => {
-        console.log('User disconnected');
+        console.log(`User${index} disconnected.`);
         io.emit('updateOnlineUsers', io.engine.clientsCount);
     });
 });
@@ -50,9 +50,8 @@ app.use(session({
     }
 }));
 
-app.use(flash());
-
 // Make flash messages available to all views
+app.use(flash());
 app.use((req, res, next) => {
     res.locals.messages = req.flash();
     next();
@@ -84,8 +83,6 @@ app.use((err, req, res, next) => {
 });
 
 const PORT = process.env.PORT;
-
-// Use server.listen instead of app.listen
 server.listen(PORT, (err) => {
     if (err) {
         console.error("Error in running the server:", err);

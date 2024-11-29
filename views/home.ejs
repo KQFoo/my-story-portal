@@ -62,28 +62,32 @@
 </head>
 
 <body class="min-h-screen text-gray-100 bg-[#0F172A]">
-    <!-- Enhanced Header - More Mobile Friendly -->
     <header class="animated-header shadow-md fixed top-0 w-full z-10 border-b border-teal-400/20">
         <div class="w-full max-w-md sm:max-w-4xl mx-auto flex flex-col items-center px-3 py-4 gap-2">
             <h1 class="text-2xl font-black tracking-tight">
                 <span class="rainbow-text">My Story Portal</span>
             </h1>
-            <div class="text-teal-200 bg-teal-900/30 px-3 py-1.5 rounded-full text-xs 
+            <div class="flex items-center gap-2">
+                <div class="text-teal-200 bg-teal-900/30 px-3 py-1.5 rounded-full text-xs 
                             border border-teal-400/20 shadow-inner flex items-center gap-1.5">
-                <div class="w-1.5 h-1.5 bg-teal-400 rounded-full animate-pulse"></div>
-                <span>Online: <span id="onlineCount" class="font-semibold">0</span></span>
+                    <div class="w-1.5 h-1.5 bg-teal-400 rounded-full animate-pulse"></div>
+                    <span>Online: <span id="onlineCount" class="font-semibold">0</span></span>
+                </div>
+                <a href="https://www.buymeacoffee.com/yourusername" target="_blank"
+                    class="text-xs text-teal-200 hover:underline">
+                    Buy Me a Coffee
+                </a>
             </div>
         </div>
     </header>
 
-    <!-- Enhanced Content Container -->
     <div class="w-full max-w-md sm:max-w-2xl mx-auto mt-32 mb-20 px-3">
         <!-- Welcome message -->
         <div class="mb-4 text-teal-200 bg-teal-900/30 px-3 py-1.5 rounded-full text-sm 
                     border border-teal-400/20 shadow-inner flex items-center justify-center">
             Welcome, <%= username %>!
         </div>
-        <!-- Search Section -->
+        <!-- Filter Section -->
         <div class="flex gap-2 mb-4">
             <div class="relative flex-1">
                 <input type="date" id="searchDate" onchange="filterByDate(this.value)"
@@ -130,7 +134,8 @@
                                     <div class="flex items-center gap-2">
                                         <span class="text-xs text-teal-200 bg-[#0F172A] px-2.5 py-1 rounded-full 
                                                border border-teal-400/20">
-                                            @<%= username %>
+                                            @<%= users.find(user=> user.user_id === post.user_id).user_name ||
+                                                'anonymous' %>
                                         </span>
                                         <span
                                             class="text-xs text-teal-200 bg-[#0F172A] px-2.5 py-1 rounded-full border border-teal-400/20 view-count">
@@ -176,6 +181,9 @@
                         </div>
                         <% } %>
                             <form id="storyForm" class="w-full max-w-md mx-auto flex flex-col gap-3">
+                                <input type="hidden" name="userid" value="<%= user.user_id %>">
+                                <input type="hidden" name="username" value="<%= user.user_name %>">
+
                                 <input type="text" name="title" placeholder="Title of your story" required class="w-full rounded-xl border-2 border-teal-400/20 px-4 py-2.5 
                                     bg-[#0F172A] text-teal-100 placeholder-teal-400/50 
                                     focus:ring-2 focus:ring-teal-400/40 focus:border-teal-400/40 
@@ -206,6 +214,7 @@
     <script src="/socket.io/socket.io.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            // Toggle form button
             const toggleBtn = document.getElementById('toggleForm');
             const formContent = document.getElementById('formContent');
             const toggleIcon = document.getElementById('toggleIcon');
@@ -222,14 +231,14 @@
                 storyForm.addEventListener('submit', submitStory);
             }
 
-            // Add reset search button listener
+            // Reset filter button
             const resetSearchBtn = document.getElementById('resetSearchBtn');
             if (resetSearchBtn) {
                 resetSearchBtn.addEventListener('click', resetSearch);
             }
         });
 
-        // Socket.io connection
+        // Socket.io connection (online user)
         try {
             const socket = io({
                 transports: ['websocket', 'polling'],
@@ -251,22 +260,32 @@
             console.warn('Socket connection failed:', error);
         }
 
-        // Search functions
+        // Check if local storage is empty
+        const username = localStorage.getItem('username') || 'anonymous';
+        const user_created = localStorage.getItem('user_created');
+
+        if (username === null || user_created === null) {
+            console.error("Error: username or timestamp is null");
+            window.location.href = "/";
+        }
+
+        // Filter posts by date
         function filterByDate(date) {
             if (!date) return;
             const formattedDate = new Date(date).toISOString().split('T')[0];
-            window.location.href = `/post/filter?date=${formattedDate}`;
+            window.location.href = `/post/filter?date=${formattedDate}&username=${username}&timestamp=${user_created}`;
         }
 
+        // Reset the filter
         function resetSearch() {
             const searchDate = document.getElementById('searchDate');
             if (searchDate) {
-                searchDate.value = ''; // Clear the date input
+                searchDate.value = '';
             }
-            window.location.reload();
+            window.location.href = `/home?username=${username}&timestamp=${user_created}`;
         }
 
-        // Add notification function
+        // Notification function
         function showNotification(message, type = 'success') {
             const notification = document.createElement('div');
             notification.className = `fixed top-4 right-4 p-4 rounded-lg shadow-lg z-50 ${type === 'success'
@@ -288,7 +307,7 @@
             const form = event.target;
             const submitButton = form.querySelector('button[type="submit"]');
 
-            // Add loading state
+            // Loading state
             const originalButtonText = submitButton.innerHTML;
             submitButton.disabled = true;
             submitButton.innerHTML = `
@@ -322,7 +341,7 @@
                     data = await response.json();
                 } else {
                     const text = await response.text();
-                    console.log('Response text:', text);
+                    // console.log('Response text:', text);
                     try {
                         data = JSON.parse(text);
                     } catch (e) {
@@ -355,7 +374,7 @@
                             <div class="flex flex-col gap-2">
                                 <div class="flex items-center gap-2">
                                     <span class="text-xs text-teal-200 bg-[#0F172A] px-2.5 py-1 rounded-full shadow-inner border border-teal-400/20">
-                                        @${data.post.username || 'anonymous'}
+                                        @${data.user_name || 'anonymous'}
                                     </span>
                                     <span class="text-xs text-teal-200 bg-[#0F172A] px-2.5 py-1 rounded-full shadow-inner border border-teal-400/20 view-count">
                                         ${data.post.views} views
@@ -373,7 +392,7 @@
 
                     // Check if there's a "no stories" message and remove it
                     const noStoriesMessage = postsContainer.querySelector(':scope > div:only-child');
-                    if (noStoriesMessage && noStoriesMessage.textContent.includes('No stories yet')) {
+                    if (noStoriesMessage && noStoriesMessage.textContent.includes('No stories found')) {
                         noStoriesMessage.remove();
                     }
 
@@ -401,7 +420,7 @@
             }
         }
 
-        // Add this after DOMContentLoaded
+        // Observe post
         const observerOptions = {
             root: null,
             rootMargin: '0px',
