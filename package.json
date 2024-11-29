@@ -1,6 +1,7 @@
 {
   "name": "my-story-portal",
   "scripts": {
+    "start": "node app.js",
     "dev": "nodemon app.js",
     "build": "tailwindcss -i ./public/input.css -o ./public/output.css --watch"
   },
