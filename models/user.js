@@ -29,20 +29,20 @@ module.exports = function (sequelize, DataTypes) {
         timestamps: true,
         createdAt: 'created_at',
         updatedAt: 'updated_at',
-        indexes: [{
-            name: 'PRIMARY',
-            unique: true,
-            using: 'BTREE',
-            fields: [{
-                name: 'user_id'
-            }]
-        }, {
-            name: 'user_name',
-            unique: true,
-            using: 'BTREE',
-            fields: [{
-                name: 'user_name'
-            }]
-        }]
+        // indexes: [{
+        //     name: 'PRIMARY_USER',
+        //     unique: true,
+        //     using: 'BTREE',
+        //     fields: [{
+        //         name: 'user_id'
+        //     }]
+        // }, {
+        //     name: 'user_name',
+        //     unique: true,
+        //     using: 'BTREE',
+        //     fields: [{
+        //         name: 'user_name'
+        //     }]
+        // }]
     });
 };

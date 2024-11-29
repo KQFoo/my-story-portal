@@ -8,8 +8,14 @@ const sequelize = new Sequelize(
     process.env.DB_PASSWORD,
     {
         host: process.env.DB_HOST,
-        dialect: process.env.DB_DIALECT,
+        dialect: 'postgres',
         logging: false,
+        dialectOptions: {
+            ssl: {
+                require: true,
+                rejectUnauthorized: false
+            }
+        }
     }
 );
 
@@ -25,9 +31,9 @@ sequelize.authenticate()
 
 const syncDatabase = async () => {
     try {
-        await sequelize.query('SET FOREIGN_KEY_CHECKS = 0;');
-        await sequelize.sync({ alter: true });
-        await sequelize.query('SET FOREIGN_KEY_CHECKS = 1;');
+        //await sequelize.query('SET FOREIGN_KEY_CHECKS = 0;');
+        await sequelize.sync({ force: true });
+        //await sequelize.query('SET FOREIGN_KEY_CHECKS = 1;');
         console.log('Database synced...');
     } catch (err) {
         console.error('Unable to sync the database:', err);

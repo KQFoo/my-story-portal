@@ -59,23 +59,23 @@ module.exports = function (sequelize, DataTypes) {
         timestamps: true,
         createdAt: 'created_at',
         updatedAt: 'updated_at',
-        indexes: [
-            {
-                name: 'PRIMARY',
-                unique: true,
-                using: 'BTREE',
-                fields: [{
-                    name: 'post_id'
-                }]
-            },
-            {
-                name: 'post_user_id_fk',
-                using: 'BTREE',
-                fields: [{
-                    name: 'user_id'
-                }]
-            }
-        ]
+        // indexes: [
+        //     {
+        //         name: 'PRIMARY',
+        //         unique: true,
+        //         using: 'BTREE',
+        //         fields: [{
+        //             name: 'post_id'
+        //         }]
+        //     },
+        //     {
+        //         name: 'post_user_id_fk',
+        //         using: 'BTREE',
+        //         fields: [{
+        //             name: 'user_id'
+        //         }]
+        //     }
+        // ]
     });
 };
 
