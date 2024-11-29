@@ -10,7 +10,7 @@
 - Tailwind CSS
 - Node.js
 - Express
-- MySQL
+- MySQL / PostgreSQL
 
 ## AI Feedback
 I think this is a genuinely excellent idea for several reasons:
