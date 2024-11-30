@@ -11,6 +11,15 @@
 - Node.js
 - Express
 - MySQL / PostgreSQL
+- Cursor
+
+## Features
+- Play song "Story Of My Life" after first page interaction
+- Generate Random Quote (API fetching)
+- Upload Post (title, url, content)
+- Display Video from URL
+- View All Posts (user, view, date)
+- Filter/Reset Posts By Date
 
 ## AI Feedback
 I think this is a genuinely excellent idea for several reasons:
