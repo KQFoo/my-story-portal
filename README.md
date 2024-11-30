@@ -2,24 +2,32 @@
 
 ## Introduction
 - A place for emotional expression through music
-- A platform for sharing both current moods and inspirational songs
-- A space where music and personal stories intersect
+- A platform for sharing both stories and songs
 
 ## Technology Stack
 - EJS
 - Tailwind CSS
 - Node.js
 - Express
-- MySQL / PostgreSQL
+- Socket.IO
+- MySQL (Development)
+- PostgreSQL (Deployment)
 - Cursor
 
 ## Features
 - Play song "Story Of My Life" after first page interaction
 - Generate Random Quote (API fetching)
+- Anonymous User (instead of signup/login)
+- Real-Time User Count
 - Upload Post (title, url, content)
 - Display Video from URL
 - View All Posts (user, view, date)
 - Filter/Reset Posts By Date
+
+## Display
+![Alt text](public/index.png)
+![Alt text](public/home.png)
+![Alt text](public/home2.png)
 
 ## AI Feedback
 I think this is a genuinely excellent idea for several reasons:
