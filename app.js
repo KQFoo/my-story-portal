@@ -4,7 +4,7 @@ const mainRouter = require("./routes/index");
 const cors = require("cors");
 require("dotenv").config();
 const sequelize = require("./config/db");
-const session = require('express-session');
+const session = require('cookie-session');
 const flash = require('connect-flash');
 const http = require('http');
 const socketIO = require('socket.io');
