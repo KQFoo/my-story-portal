@@ -34,7 +34,7 @@ router.get("/home", async (req, res) => {
 
         res.render('home', {
             username: req.query.username || 'anonymous',
-            user: u,
+            user: `${u.user_id}th user`,
             posts: posts,
             users: users
         });

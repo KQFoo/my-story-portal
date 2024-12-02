@@ -84,7 +84,7 @@
         <!-- Welcome message -->
         <div class="mb-4 text-teal-200 bg-teal-900/30 px-3 py-1.5 rounded-full text-sm 
                     border border-teal-400/20 shadow-inner flex items-center justify-center">
-            Welcome, <%= username %>!
+            Welcome, <%= user %>!
         </div>
         <!-- Filter Section -->
         <div class="flex gap-2 mb-4">
@@ -133,8 +133,7 @@
                                     <div class="flex items-center gap-2">
                                         <span class="text-xs text-teal-200 bg-[#0F172A] px-2.5 py-1 rounded-full 
                                                border border-teal-400/20">
-                                            @<%= users.find(user=> user.user_id === post.user_id).user_name ||
-                                                'anonymous' %>
+                                            @<%= user || 'anonymous' %>
                                         </span>
                                         <span
                                             class="text-xs text-teal-200 bg-[#0F172A] px-2.5 py-1 rounded-full border border-teal-400/20 view-count">
@@ -373,7 +372,7 @@
                             <div class="flex flex-col gap-2">
                                 <div class="flex items-center gap-2">
                                     <span class="text-xs text-teal-200 bg-[#0F172A] px-2.5 py-1 rounded-full shadow-inner border border-teal-400/20">
-                                        @${data.user_name || 'anonymous'}
+                                        @${data.post.user_id || 'anonymous'}th user
                                     </span>
                                     <span class="text-xs text-teal-200 bg-[#0F172A] px-2.5 py-1 rounded-full shadow-inner border border-teal-400/20 view-count">
                                         ${data.post.views} views
