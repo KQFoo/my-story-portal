@@ -84,7 +84,7 @@
         <!-- Welcome message -->
         <div class="mb-4 text-teal-200 bg-teal-900/30 px-3 py-1.5 rounded-full text-sm 
                     border border-teal-400/20 shadow-inner flex items-center justify-center">
-            Welcome, <%= user %>!
+            Welcome, <%= user.user_id %>th user!
         </div>
         <!-- Filter Section -->
         <div class="flex gap-2 mb-4">
@@ -133,7 +133,7 @@
                                     <div class="flex items-center gap-2">
                                         <span class="text-xs text-teal-200 bg-[#0F172A] px-2.5 py-1 rounded-full 
                                                border border-teal-400/20">
-                                            @<%= user || 'anonymous' %>
+                                            @<%= post.user_id || 'anonymous' %>th user
                                         </span>
                                         <span
                                             class="text-xs text-teal-200 bg-[#0F172A] px-2.5 py-1 rounded-full border border-teal-400/20 view-count">
